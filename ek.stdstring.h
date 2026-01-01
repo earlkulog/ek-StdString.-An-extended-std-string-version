@@ -193,7 +193,8 @@ namespace ek {
 			std::vector<t_std_str> result;
 			uint32_t count = 0, max = static_cast<uint32_t>(limit);
 			auto haystack = this->c_str();
-			int ch = base_type(separator).size();
+			auto chstack = this->size();
+			int chsep = base_type(separator).size();
 			while (1) {
 				uint32_t pos;
 				if (caseSensitive) {
@@ -205,15 +206,15 @@ namespace ek {
 				}
 				else {
 					auto it = std::search(
-						haystack, haystack + std::strlen(haystack),
-						separator, separator + std::strlen(separator),
+						haystack, haystack + chstack,
+						separator, separator + chsep,
 						ci_comparer
 					);
 					if (!*it)break;
 					pos = it - haystack;
 				}
 				result.push_back(t_std_str(haystack, pos));
-				pos += ch;
+				pos += chsep;
 				haystack += pos;
 				if (++count == max)break;
 			}
@@ -410,4 +411,5 @@ namespace ek {
 #else
 	using StdString = StdStringA;
 #endif
+
 }
